@@ -9,15 +9,9 @@ import Projects from './components/Projects/Projects';
 import Skills from './components/Skills/Skills';
 import WelcomeLoader from './components/WelcomeLoader/WelcomeLoader';
 
-const modelPreloadPath = new URL('/modelEmpty.glb', import.meta.url).href;
-
 function App() {
-  const [isCached, setIsCached] = useState(() => {
-    return localStorage.getItem('model_cached') === 'true';
-  });
-  
-  const [modelLoaded, setModelLoaded] = useState(isCached);
-  const [minTimeDone, setMinTimeDone] = useState(isCached);
+  const [modelLoaded, setModelLoaded] = useState(false);
+  const [minTimeDone, setMinTimeDone] = useState(false);
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -28,50 +22,21 @@ function App() {
   });
 
   useEffect(() => {
-    if ('caches' in window) {
-      caches.open('3d-models-cache').then((cache) => {
-        cache.match(modelPreloadPath).then((response) => {
-          if (response) {
-            setIsCached(true);
-            setModelLoaded(true);
-            setMinTimeDone(true);
-            localStorage.setItem('model_cached', 'true');
-          } else {
-            fetch(modelPreloadPath).then((fetchResponse) => {
-              if (fetchResponse.ok) {
-                cache.put(modelPreloadPath, fetchResponse.clone());
-                localStorage.setItem('model_cached', 'true');
-              }
-            }).catch(() => {
-              setModelLoaded(true);
-            });
-          }
-        });
-      });
-    } else {
-      setModelLoaded(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isCached) return;
-
     const timer = setTimeout(() => {
       setMinTimeDone(true);
     }, 1500);
 
     const fallbackTimer = setTimeout(() => {
       setModelLoaded(true);
-      setMinTimeDone(true);
     }, 6000);
 
     return () => {
       clearTimeout(timer);
       clearTimeout(fallbackTimer);
     };
-  }, [isCached]);
+  }, []);
 
-  const showLoader = !isCached && (!modelLoaded || !minTimeDone);
+  const showLoader = !modelLoaded || !minTimeDone;
 
   useEffect(() => {
     if (showLoader) {
@@ -101,17 +66,12 @@ function App() {
 
   return (
     <>
-      {showLoader && (
-        <WelcomeLoader loading={showLoader} setLoading={() => {}} />
-      )}
+      <WelcomeLoader loading={showLoader} setLoading={() => {}} />
     
       <Navbar loading={showLoader} isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       <main>
         <Hero loading={showLoader} />
-        <About setModelLoaded={() => {
-          setModelLoaded(true);
-          localStorage.setItem('model_cached', 'true');
-        }} />
+        <About setModelLoaded={() => setModelLoaded(true)} />
         <Skills />
         <Projects />
         <Contact />

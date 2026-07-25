@@ -35,7 +35,6 @@ const About: React.FC<AboutProps> = ({ setModelLoaded }) => {
           className={`about-container reveal-section ${isVisible ? 'animate-reveal' : ''}`}
           ref={sectionRef}
         >
-            
             <div className="left-column">
                 <div className="personal-info">
                     <div 
@@ -49,7 +48,6 @@ const About: React.FC<AboutProps> = ({ setModelLoaded }) => {
                             crossorigin="anonymous"
                             loading="eager"
                             reveal="auto"
-                            cache-policy="use-cache"
                             onload={() => setModelLoaded()}
                         >
                             <div className="model-icon-slot">
