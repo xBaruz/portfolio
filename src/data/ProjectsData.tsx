@@ -36,6 +36,7 @@ import hybridShop7 from "../assets/img/hybridshop/7.jpg";
 import hybridShop8 from "../assets/img/hybridshop/8.jpg";
 import hybridShop9 from "../assets/img/hybridshop/9.jpg";
 import hybridShop10 from "../assets/img/hybridshop/10.jpg";
+import hybridShop11 from "../assets/img/hybridshop/11.jpg";
 
 export const ProjectsData : ProjectInterface[] = [
   {
@@ -53,7 +54,8 @@ export const ProjectsData : ProjectInterface[] = [
       hybridShop7,
       hybridShop8,
       hybridShop9,
-      hybridShop10
+      hybridShop10,
+      hybridShop11
     ],
     technologies: [
       "C#",
@@ -84,7 +86,8 @@ export const ProjectsData : ProjectInterface[] = [
       "Powiadomienia i czat na żywo wykorzystujące WebSockets / SignalR",
       "Szybki cache dla koszyka i blokad magazynowych w bazie Redis",
       "Przechowywanie zdjęć produktów w chmurze obiektowej MinIO (S3 Compatible)",
-      "Automatyczne wysyłanie e-maili i obsługa procesu zamówień z wykorzystaniem Mailpit"
+      "Automatyczne wysyłanie e-maili i obsługa procesu zamówień z wykorzystaniem Mailpit",
+      "Testy bezpieczeństwa, jednostkowe i integracyjne"
     ]
   },
   {
