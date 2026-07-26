@@ -7,6 +7,7 @@ const ModelViewer = 'model-viewer' as any;
 
 const cert1Thumb = new URL('../../assets/cert1.png', import.meta.url).href;
 const dyp1Thumb = new URL('../../assets/dyp1.png', import.meta.url).href;
+const cert2Thumb = new URL('../../assets/networksecurity.jpg', import.meta.url).href;
 
 interface AboutProps {
   setModelLoaded: () => void;
@@ -79,6 +80,12 @@ const About: React.FC<AboutProps> = ({ setModelLoaded }) => {
                                 <img src={dyp1Thumb} alt="Dyplom Inżyniera" />
                             </div>
                             <span>Dyplom Inżyniera</span>
+                        </div>
+                        <div className="cert-card" onClick={() => setActiveImage(cert2Thumb)}>
+                            <div className="cert-img-wrapper">
+                                <img src={cert2Thumb} alt="Cisco Academy: Network Security" />
+                            </div>
+                            <span>Cisco Academy: Network Security</span>
                         </div>
                     </div>
                 </div>
