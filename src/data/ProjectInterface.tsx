@@ -1,7 +1,8 @@
 export default interface ProjectInterface {
   id: string;
   title: string;
-  img: string; 
+  titleEn?: string;
+  img: string;
   imgPosition?: string;
   screenshots?: string[];
   github?: string;
@@ -9,5 +10,7 @@ export default interface ProjectInterface {
   githubBackend?: string;
   technologies: string[];
   description: string;
+  descriptionEn?: string;
   features: string[];
+  featuresEn?: string[];
 }

@@ -1,54 +1,43 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router";
 import { FaGithub, FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { ProjectsData } from "../../data/ProjectsData";
+import { ProjectsData, localizeProject } from "../../data/ProjectsData";
+import ProjectInterface from "../../data/ProjectInterface";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
+import { useLanguage } from "../../context/LanguageContext";
 import "./AllProjectsPage.css";
-
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  img: string;
-  screenshots?: string[];
-  github?: string;
-  githubBackend?: string;
-  githubFrontend?: string;
-  technologies: string[];
-  features: string[];
-}
+import "../Navbar/LanguageToggle.css";
 
 export default function AllProjectsPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { language, toggleLanguage, t } = useLanguage();
 
   const [showcaseRef, showcaseVisible] = useIntersectionObserver();
   const [otherProjectsRef, otherProjectsVisible] = useIntersectionObserver();
 
-  const activeProject: Project =
-    ProjectsData.find((p: Project): boolean => p.id === id) || ProjectsData[0];
+  const activeProject: ProjectInterface =
+    ProjectsData.find((project) => project.id === id) || ProjectsData[0];
 
-  const [prevId, setPrevId] = useState<string | undefined>(id);
+  const localizedActiveProject = localizeProject(activeProject, language);
+
   const [activeImg, setActiveImg] = useState<string>(activeProject.img);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  if (id !== prevId) {
-    setPrevId(id);
+  useEffect(() => {
     setActiveImg(activeProject.img);
     setIsModalOpen(false);
-  }
-
-  useEffect(() => {
     window.scrollTo(0, 0);
-  }, [id]);
+  }, [activeProject.id, activeProject.img]);
 
-  const allScreenshots: string[] = [
+  const allScreenshots = useMemo<string[]>(() => [
     activeProject.img,
     ...(activeProject.screenshots || [])
-  ];
+  ], [activeProject.img, activeProject.screenshots]);
 
   const handlePrevImg = useCallback((e?: React.MouseEvent): void => {
     e?.stopPropagation();
+
     setActiveImg((currentImg) => {
       const currentIndex = allScreenshots.indexOf(currentImg);
       const prevIndex = currentIndex <= 0 ? allScreenshots.length - 1 : currentIndex - 1;
@@ -58,6 +47,7 @@ export default function AllProjectsPage() {
 
   const handleNextImg = useCallback((e?: React.MouseEvent): void => {
     e?.stopPropagation();
+
     setActiveImg((currentImg) => {
       const currentIndex = allScreenshots.indexOf(currentImg);
       const nextIndex = currentIndex === allScreenshots.length - 1 ? 0 : currentIndex + 1;
@@ -66,14 +56,16 @@ export default function AllProjectsPage() {
   }, [allScreenshots]);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isModalOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isModalOpen) {
+        return;
+      }
 
-      if (e.key === "Escape") {
+      if (event.key === "Escape") {
         setIsModalOpen(false);
-      } else if (e.key === "ArrowLeft") {
+      } else if (event.key === "ArrowLeft") {
         handlePrevImg();
-      } else if (e.key === "ArrowRight") {
+      } else if (event.key === "ArrowRight") {
         handleNextImg();
       }
     };
@@ -81,6 +73,7 @@ export default function AllProjectsPage() {
     if (isModalOpen) {
       window.addEventListener("keydown", handleKeyDown);
     }
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
@@ -89,22 +82,36 @@ export default function AllProjectsPage() {
   return (
     <div className="all-projects-container content-layer">
       <div className="nebula"></div>
-      <button
-        className="main-styled cold"
-        onClick={() => navigate("/")}
-        style={{ width: "auto", marginBottom: "3rem" }}
-      >
-        <span className="icon">←</span> Powrót do strony głównej
-      </button>
 
-      <section 
+      <div className="all-projects-topbar">
+        <button
+          className="main-styled cold"
+          onClick={() => navigate("/")}
+        >
+          <span className="icon">←</span> {t('allProjects.back')}
+        </button>
+
+        <button
+          type="button"
+          className="language-toggle-btn language-toggle-btn--standalone"
+          onClick={toggleLanguage}
+          aria-label={language === 'pl' ? t('nav.switchToEnglish') : t('nav.switchToPolish')}
+          title={language === 'pl' ? t('nav.switchToEnglish') : t('nav.switchToPolish')}
+        >
+          <span className={language === 'pl' ? 'active' : ''}>PL</span>
+          <span className="language-toggle-separator">/</span>
+          <span className={language === 'en' ? 'active' : ''}>EN</span>
+        </button>
+      </div>
+
+      <section
         className={`active-project-showcase reveal-section ${showcaseVisible ? 'animate-reveal' : ''}`}
         ref={showcaseRef}
       >
         <div className="project-detail-left">
-          <h1 className="project-detail-title">{activeProject.title}</h1>
+          <h1 className="project-detail-title">{localizedActiveProject.title}</h1>
 
-          <p className="project-detail-desc">{activeProject.description}</p>
+          <p className="project-detail-desc">{localizedActiveProject.description}</p>
 
           <div className="project-links-box">
             {activeProject.github && (
@@ -115,7 +122,7 @@ export default function AllProjectsPage() {
                 className="repo-link"
               >
                 <FaGithub style={{ fontSize: "1.1rem" }} />
-                Kod projektu
+                {t('allProjects.projectCode')}
               </a>
             )}
 
@@ -127,7 +134,7 @@ export default function AllProjectsPage() {
                 className="repo-link"
               >
                 <FaGithub style={{ fontSize: "1.1rem" }} />
-                Kod backendu
+                {t('allProjects.backendCode')}
               </a>
             )}
 
@@ -139,16 +146,16 @@ export default function AllProjectsPage() {
                 className="repo-link"
               >
                 <FaGithub style={{ fontSize: "1.1rem" }} />
-                Kod frontendu
+                {t('allProjects.frontendCode')}
               </a>
             )}
           </div>
 
           <div className="tech-section">
-            <h3>Technologie</h3>
+            <h3>{t('allProjects.technologies')}</h3>
 
             <div className="tech-tags-grid">
-              {activeProject.technologies.map((tech: string, index: number) => (
+              {activeProject.technologies.map((tech, index) => (
                 <span key={index} className="tech-tag">
                   {tech}
                 </span>
@@ -157,11 +164,11 @@ export default function AllProjectsPage() {
           </div>
 
           <div className="features-section">
-            <h3>Funkcje</h3>
+            <h3>{t('allProjects.features')}</h3>
 
             <ul className="features-list">
-              {activeProject.features.map((feat: string, index: number) => (
-                <li key={index}>{feat}</li>
+              {localizedActiveProject.features.map((feature, index) => (
+                <li key={index}>{feature}</li>
               ))}
             </ul>
           </div>
@@ -170,20 +177,28 @@ export default function AllProjectsPage() {
         <div className="project-detail-right">
           <div className="mockup-wrapper">
             {allScreenshots.length > 1 && (
-              <button className="gallery-nav-btn prev" onClick={handlePrevImg} aria-label="Poprzednie zdjęcie">
+              <button
+                className="gallery-nav-btn prev"
+                onClick={handlePrevImg}
+                aria-label={t('allProjects.previousImage')}
+              >
                 &#10094;
               </button>
             )}
 
             <img
               src={activeImg}
-              alt={activeProject.title}
+              alt={localizedActiveProject.title}
               className="mockup-img clickable"
               onClick={() => setIsModalOpen(true)}
             />
 
             {allScreenshots.length > 1 && (
-              <button className="gallery-nav-btn next" onClick={handleNextImg} aria-label="Następne zdjęcie">
+              <button
+                className="gallery-nav-btn next"
+                onClick={handleNextImg}
+                aria-label={t('allProjects.nextImage')}
+              >
                 &#10095;
               </button>
             )}
@@ -192,23 +207,19 @@ export default function AllProjectsPage() {
           {activeProject.screenshots && activeProject.screenshots.length > 0 && (
             <div className="screenshots-gallery">
               <div
-                className={`screenshot-thumb ${
-                  activeImg === activeProject.img ? "active" : ""
-                }`}
+                className={`screenshot-thumb ${activeImg === activeProject.img ? "active" : ""}`}
                 onClick={() => setActiveImg(activeProject.img)}
               >
-                <img src={activeProject.img} alt="Podgląd główny" />
+                <img src={activeProject.img} alt={t('allProjects.mainPreview')} />
               </div>
 
-              {activeProject.screenshots.map((screen: string, index: number) => (
+              {activeProject.screenshots.map((screen, index) => (
                 <div
                   key={index}
-                  className={`screenshot-thumb ${
-                    activeImg === screen ? "active" : ""
-                  }`}
+                  className={`screenshot-thumb ${activeImg === screen ? "active" : ""}`}
                   onClick={() => setActiveImg(screen)}
                 >
-                  <img src={screen} alt={`Zrzut ekranu ${index + 1}`} />
+                  <img src={screen} alt={`${t('allProjects.screenshot')} ${index + 1}`} />
                 </div>
               ))}
             </div>
@@ -218,11 +229,11 @@ export default function AllProjectsPage() {
 
       {isModalOpen && (
         <div className="image-modal-backdrop" onClick={() => setIsModalOpen(false)}>
-          <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="image-modal-content" onClick={(event) => event.stopPropagation()}>
             <button
               className="image-modal-close"
               onClick={() => setIsModalOpen(false)}
-              aria-label="Zamknij podgląd"
+              aria-label={t('allProjects.closePreview')}
             >
               <FaTimes />
             </button>
@@ -232,56 +243,66 @@ export default function AllProjectsPage() {
                 <button
                   className="modal-nav-btn prev"
                   onClick={handlePrevImg}
-                  aria-label="Poprzednie zdjęcie"
+                  aria-label={t('allProjects.previousImage')}
                 >
                   <FaChevronLeft />
                 </button>
                 <button
                   className="modal-nav-btn next"
                   onClick={handleNextImg}
-                  aria-label="Następne zdjęcie"
+                  aria-label={t('allProjects.nextImage')}
                 >
                   <FaChevronRight />
                 </button>
               </>
             )}
 
-            <img src={activeImg} alt={activeProject.title} className="image-modal-img" />
+            <img
+              src={activeImg}
+              alt={localizedActiveProject.title}
+              className="image-modal-img"
+            />
           </div>
         </div>
       )}
 
       <hr className="section-divider" />
 
-      <section 
+      <section
         className={`other-projects-section reveal-section ${otherProjectsVisible ? 'animate-reveal' : ''}`}
         ref={otherProjectsRef}
       >
-        <h2 className="other-projects-heading">Inne projekty</h2>
+        <h2 className="other-projects-heading">{t('allProjects.otherProjects')}</h2>
 
         <div className="projects-grid">
           {ProjectsData
-            .filter((p: Project): boolean => p.id !== activeProject.id)
-            .map((project: Project) => {
+            .filter((project) => project.id !== activeProject.id)
+            .map((project) => {
+              const localizedProject = localizeProject(project, language);
+
               return (
-                <div
+                <article
                   key={project.id}
                   className="project-card"
                   onClick={() => navigate(`/projects/${project.id}`)}
                 >
                   <div className="img-wrapper">
-                    <img src={project.img} alt={project.title} />
+                    <img src={project.img} alt={localizedProject.title} />
                     <div className="card-overlay" />
                   </div>
 
                   <div className="project-info">
-                    <h3>{project.title}</h3>
-                    <p>{project.description.slice(0, 100)}...</p>
+                    <h3>{localizedProject.title}</h3>
+                    <p>
+                      {localizedProject.description.length > 100
+                        ? `${localizedProject.description.slice(0, 100)}...`
+                        : localizedProject.description}
+                    </p>
                     <button className="project-card-btn">
-                      Zobacz projekt
+                      {t('allProjects.viewProject')}
                     </button>
                   </div>
-                </div>
+                </article>
               );
             })}
         </div>

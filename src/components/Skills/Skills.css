@@ -1,108 +1,163 @@
 .skills-section {
-  margin: 7em 0;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 auto;
+  padding: clamp(82px, 10vw, 128px) var(--container-padding);;
+}
+
+.skills-section::before {
+  position: absolute;
+  inset: 22% auto auto 50%;
+  width: min(800px, 85vw);
+  height: 300px;
+  content: '';
+  background: radial-gradient(circle, var(--accent-soft), transparent 68%);
+  filter: blur(54px);
+  opacity: 0.72;
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 .skills-title {
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: var(--text-primary);
-  margin-bottom: 20px;
+  position: relative;
+  margin-bottom: 22px;
+  color: var(--accent);
+  font-size: 0.78rem;
   font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 .filters {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 42px;
+  padding: 7px;
+  border: var(--border-card);
+  border-radius: 999px;
+  background: var(--bg-card3);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 button.filter-option {
-  padding: 10px 22px;
-  border-radius: 50px;
+  min-height: 40px;
+  padding: 8px 18px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--card-text-sub);
+  box-shadow: none;
+  font-size: 0.82rem;
+  font-weight: 800;
   cursor: pointer;
-  background: var(--bg-card3);
-  border: var(--border-card2);
-  color: var(--card-text-main);
-  font-weight: 700;
-  font-size: 0.9rem;
-  box-shadow: var(--card-shadow);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.25s var(--ease-out), background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
 }
 
 button.filter-option:hover {
-  background: var(--upper-icon-bg);
-  border-color: var(--accent);
+  background: var(--accent-soft);
   color: var(--accent);
+  transform: translateY(-1px);
 }
 
 button.filter-option.active {
+  border-color: transparent;
   background: var(--button-gradient);
   color: #ffffff;
-  box-shadow: 0 4px 15px var(--button-gradient-shadow);
-  border-color: transparent;
+  box-shadow: 0 10px 24px var(--button-gradient-shadow);
 }
 
 .skills-cloud {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
   justify-content: center;
-  max-width: 900px;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+  max-width: 980px;
   margin: 0 auto;
-  padding: 0 20px;
 }
 
 .skill-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
+  min-height: 52px;
+  padding: 12px 18px;
+  border: var(--border-card);
+  border-radius: 16px;
   background: var(--bg-card3);
-  border: var(--border-card2);
-  box-shadow: var(--card-shadow);
-  padding: 12px 22px;
-  border-radius: 12px;
   color: var(--card-text-main);
-  font-weight: 700;
-  font-size: 0.95rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-              border-color 0.3s ease, 
-              box-shadow 0.3s ease;
+  box-shadow: var(--card-shadow);
+  font-size: 0.88rem;
+  font-weight: 800;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition: transform 0.28s var(--ease-out), border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
 }
 
 .skill-icon {
-  display: flex;
-  align-items: center;
-  font-size: 1.3rem;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--accent-soft);
   color: var(--accent);
-  transition: transform 0.3s ease;
+  font-size: 1.12rem;
+  transition: transform 0.28s var(--ease-out), background 0.28s ease;
 }
 
 .skill-item:hover {
-  border-color: var(--accent);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(7, 12, 20, 0.4);
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--accent) 44%, transparent);
+  background: color-mix(in srgb, var(--bg-card3) 88%, var(--accent-soft));
+  box-shadow: var(--card-shadow-hover);
 }
 
 .skill-item:hover .skill-icon {
-  transform: scale(1.15);
+  background: color-mix(in srgb, var(--accent-soft) 78%, transparent);
+  transform: rotate(-4deg) scale(1.08);
 }
 
 @media (max-width: 768px) {
-  .skills-section { margin: 4em 0; padding: 0 15px; }
-  .filters { gap: 8px; margin-bottom: 30px; }
-  button.filter-option { padding: 8px 16px; font-size: 0.85rem; }
-  .skills-cloud { gap: 10px; padding: 0; }
-  .skill-item { padding: 10px 16px; font-size: 0.85rem; gap: 8px; border-radius: 10px; }
-  .skill-icon { font-size: 1.15rem; }
+  .skills-section {
+    width: min(100% - 32px, var(--content-width));
+    padding: 72px 0;
+  }
+
+  .filters {
+    width: 100%;
+    max-width: 560px;
+    border-radius: 24px;
+  }
+
+  button.filter-option {
+    flex: 1 1 auto;
+    padding: 8px 14px;
+  }
+
+  .skills-cloud {
+    gap: 9px;
+  }
+
+  .skill-item {
+    min-height: 48px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 0.82rem;
+  }
+
+  .skill-icon {
+    width: 27px;
+    height: 27px;
+    font-size: 1rem;
+  }
 }

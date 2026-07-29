@@ -1,73 +1,90 @@
 import React, { useState } from 'react';
-import { 
-  FaReact, FaJs, FaCss3Alt, FaPython, 
-  FaDocker, FaLinux, FaWindows, FaHtml5, FaGithub 
+import {
+  FaReact, FaJs, FaCss3Alt, FaPython,
+  FaDocker, FaLinux, FaWindows, FaHtml5, FaGithub
 } from 'react-icons/fa';
-import { SiSpringboot, SiMysql } from 'react-icons/si';
+import { SiSpringboot, SiMysql, SiTypescript, SiRabbitmq, SiMongodb, SiRedis } from 'react-icons/si';
 import { AiOutlineDotNet } from 'react-icons/ai';
 import { TbBrandNextjs } from 'react-icons/tb';
 import { BiLogoPostgresql } from 'react-icons/bi';
-import { SiTypescript } from 'react-icons/si';
 import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
+import { useLanguage } from '../../context/LanguageContext';
 import "./Skills.css";
 
+type SkillCategory = 'frontend' | 'backend' | 'databases' | 'devops' | 'systems';
+type FilterCategory = 'all' | SkillCategory;
+
 const Skills = () => {
-    const filters = ["Wszystkie", "Frontend", "Backend", "Bazy danych", "Devops", "Systemy"];
-    const [active, setActive] = useState("Wszystkie");
-    const [sectionRef, isVisible] = useIntersectionObserver();
+  const [active, setActive] = useState<FilterCategory>('all');
+  const [sectionRef, isVisible] = useIntersectionObserver();
+  const { t } = useLanguage();
 
-    const skills = [
-        { id: 1, name: "React", category: "Frontend", icon: <FaReact /> },
-        { id: 2, name: "NextJs", category: "Frontend", icon: <TbBrandNextjs /> },
-        { id: 3, name: "TypeScript", category: "Frontend", icon: <SiTypescript /> },
-        { id: 4, name: "JavaScript", category: "Frontend", icon: <FaJs /> },
-        { id: 5, name: "HTML", category: "Frontend", icon: <FaHtml5 /> },
-        { id: 6, name: "CSS", category: "Frontend", icon: <FaCss3Alt /> },
-        { id: 7, name: ".NET / C#", category: "Backend", icon: <AiOutlineDotNet /> },
-        { id: 8, name: "Spring Boot / Java", category: "Backend", icon: <SiSpringboot /> },
-        { id: 9, name: "Python", category: "Backend", icon: <FaPython /> },
-        { id: 10, name: "PostgreSQL", category: "Bazy danych", icon: <BiLogoPostgresql /> },
-        { id: 11, name: "MySQL", category: "Bazy danych", icon: <SiMysql /> },
-        { id: 12, name: "Docker", category: "Devops", icon: <FaDocker /> },
-        { id: 13, name: "Git / GitHub", category: "Devops", icon: <FaGithub /> },
-        { id: 14, name: "Windows", category: "Systemy", icon: <FaWindows /> },
-        { id: 15, name: "Linux", category: "Systemy", icon: <FaLinux /> }
-    ];
+  const filters: { id: FilterCategory; label: string }[] = [
+    { id: 'all', label: t('skills.all') },
+    { id: 'frontend', label: t('skills.frontend') },
+    { id: 'backend', label: t('skills.backend') },
+    { id: 'databases', label: t('skills.databases') },
+    { id: 'devops', label: t('skills.devops') },
+    { id: 'systems', label: t('skills.systems') }
+  ];
 
-    const filteredSkills = active === "Wszystkie" 
-        ? skills 
-        : skills.filter(s => s.category === active);
+  const skills: { id: number; name: string; category: SkillCategory; icon: React.ReactNode }[] = [
+    { id: 1, name: "React", category: "frontend", icon: <FaReact /> },
+    { id: 2, name: "Next.js", category: "frontend", icon: <TbBrandNextjs /> },
+    { id: 3, name: "TypeScript", category: "frontend", icon: <SiTypescript /> },
+    { id: 4, name: "JavaScript", category: "frontend", icon: <FaJs /> },
+    { id: 5, name: "HTML", category: "frontend", icon: <FaHtml5 /> },
+    { id: 6, name: "CSS", category: "frontend", icon: <FaCss3Alt /> },
+    { id: 7, name: ".NET / C#", category: "backend", icon: <AiOutlineDotNet /> },
+    { id: 8, name: "ASP.NET Core", category: "backend", icon: <AiOutlineDotNet /> },
+    { id: 9, name: "RabbitMQ", category: "backend", icon: <SiRabbitmq /> },
+    { id: 10, name: "Spring Boot / Java", category: "backend", icon: <SiSpringboot /> },
+    { id: 11, name: "Python", category: "backend", icon: <FaPython /> },
+    { id: 12, name: "PostgreSQL", category: "databases", icon: <BiLogoPostgresql /> },
+    { id: 13, name: "MySQL", category: "databases", icon: <SiMysql /> },
+    { id: 14, name: "MongoDB", category: "databases", icon: <SiMongodb /> },
+    { id: 15, name: "Redis", category: "databases", icon: <SiRedis /> },
+    { id: 16, name: "Docker", category: "devops", icon: <FaDocker /> },
+    { id: 17, name: "Git / GitHub", category: "devops", icon: <FaGithub /> },
+    { id: 18, name: "Windows", category: "systems", icon: <FaWindows /> },
+    { id: 19, name: "Linux", category: "systems", icon: <FaLinux /> }
+  ];
 
-    return (
-        <section 
-            className={`skills-section reveal-section ${isVisible ? 'animate-reveal' : ''}`} 
-            id="skills-section"
-            ref={sectionRef}
-        >
-            <h2 className='skills-title'>Umiejętności</h2>
-            
-            <div className="filters">
-                {filters.map((f) => (
-                    <button 
-                        key={f} 
-                        className={`filter-option ${active === f ? 'active' : ''}`} 
-                        onClick={() => setActive(f)}
-                    >
-                        {f}
-                    </button>
-                ))}
-            </div>
+  const filteredSkills = active === 'all'
+    ? skills
+    : skills.filter((skill) => skill.category === active);
 
-            <div className="skills-cloud">
-                {filteredSkills.map((skill) => (
-                    <div key={skill.id} className="skill-item">
-                        <span className="skill-icon">{skill.icon}</span>
-                        <span>{skill.name}</span>
-                    </div>
-                ))}
-            </div>
-        </section>
-    );
+  return (
+    <section
+      className={`skills-section reveal-section ${isVisible ? 'animate-reveal' : ''}`}
+      id="skills-section"
+      ref={sectionRef}
+    >
+      <h2 className="skills-title">{t('skills.title')}</h2>
+
+      <div className="filters">
+        {filters.map((filter) => (
+          <button
+            type="button"
+            key={filter.id}
+            className={`filter-option ${active === filter.id ? 'active' : ''}`}
+            onClick={() => setActive(filter.id)}
+          >
+            {filter.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="skills-cloud">
+        {filteredSkills.map((skill) => (
+          <div key={skill.id} className="skill-item">
+            <span className="skill-icon">{skill.icon}</span>
+            <span>{skill.name}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 };
 
 export default Skills;

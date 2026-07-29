@@ -12,62 +12,62 @@ import WelcomeLoader from './components/WelcomeLoader/WelcomeLoader';
 function App() {
   const [modelLoaded, setModelLoaded] = useState(false);
   const [minTimeDone, setMinTimeDone] = useState(false);
-
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
+
     if (savedTheme) {
       return savedTheme === 'dark';
     }
-    return true;
+
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const minimumLoaderTimer = window.setTimeout(() => {
       setMinTimeDone(true);
-    }, 1500);
+    }, 1200);
 
-    const fallbackTimer = setTimeout(() => {
+    const modelFallbackTimer = window.setTimeout(() => {
       setModelLoaded(true);
-    }, 6000);
+    }, 5000);
 
     return () => {
-      clearTimeout(timer);
-      clearTimeout(fallbackTimer);
+      window.clearTimeout(minimumLoaderTimer);
+      window.clearTimeout(modelFallbackTimer);
     };
   }, []);
 
   const showLoader = !modelLoaded || !minTimeDone;
 
   useEffect(() => {
+    let scrollTimeout;
+
     if (showLoader) {
       document.body.classList.add('no-scroll');
     } else {
-      const scrollTimeout = setTimeout(() => {
+      scrollTimeout = window.setTimeout(() => {
         document.body.classList.remove('no-scroll');
-      }, 500);
-      return () => clearTimeout(scrollTimeout);
+      }, 450);
     }
-    return () => document.body.classList.remove('no-scroll');
+
+    return () => {
+      document.body.classList.remove('no-scroll');
+      window.clearTimeout(scrollTimeout);
+    };
   }, [showLoader]);
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark-theme');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark-theme');
-      localStorage.setItem('theme', 'light');
-    }
+    document.documentElement.classList.toggle('dark-theme', isDarkMode);
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+    setIsDarkMode((currentTheme) => !currentTheme);
   };
 
   return (
     <>
       <WelcomeLoader loading={showLoader} setLoading={() => {}} />
-    
       <Navbar loading={showLoader} isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       <main>
         <Hero loading={showLoader} />
@@ -75,7 +75,7 @@ function App() {
         <Skills />
         <Projects />
         <Contact />
-      </main>  
+      </main>
       <Footer />
     </>
   );

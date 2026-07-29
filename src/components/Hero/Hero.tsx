@@ -3,6 +3,7 @@ import "./Hero.css"
 import { motion } from 'framer-motion'
 import { FaGithub, FaLinkedin } from 'react-icons/fa'
 import { FiMail } from 'react-icons/fi'
+import { useLanguage } from '../../context/LanguageContext'
 
 interface HeroProps {
   loading: boolean
@@ -10,7 +11,8 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ loading }) => {
   const [fadeIn, setFadeIn] = useState(false)
-  
+  const { language, t } = useLanguage()
+
   useEffect(() => {
     if (!loading) {
       setFadeIn(true)
@@ -18,29 +20,31 @@ const Hero: React.FC<HeroProps> = ({ loading }) => {
   }, [loading])
 
   const handleOpenCV = () => {
-    window.open('data/__CV-Bartłomiej-Mazurkiewicz.pdf', '_blank', 'noopener,noreferrer')
+    window.open(
+      `${import.meta.env.BASE_URL}cv.html?lang=${language}`,
+      '_blank',
+      'noopener,noreferrer'
+    )
   }
 
   return (
     <section className={`hero-section ${fadeIn ? 'fade-in' : ''}`}>
       <div className="nebula"></div>
       <div className="hero-container">
-
         <div className="hero-left">
-          <div className="upper-icon">✦ Portfolio</div>
+          <div className="upper-icon">{t('hero.badge')}</div>
 
           <h1>
-            Witaj na <span>mojej</span> stronie Internetowej
+            {t('hero.titleStart')} <span>{t('hero.titleAccent')}</span> {t('hero.titleEnd')}
           </h1>
 
           <div className="desc">
-            To moje portfolio — znajdziesz tutaj projekty, które stworzyłem, technologie,
-            z których korzystam na co dzień, oraz trochę informacji o mnie.
+            {t('hero.description')}
           </div>
 
           <div className="button">
             <button className="main-styled" onClick={handleOpenCV}>
-              Wyświetl CV
+              {t('hero.cv')}
             </button>
           </div>
 
@@ -66,6 +70,7 @@ const Hero: React.FC<HeroProps> = ({ loading }) => {
               target="_blank"
               rel="noopener noreferrer"
               className="orbit-cube-wrapper"
+              aria-label="GitHub"
             >
               <div className="cube-face face-front"><FaGithub /></div>
               <div className="cube-face face-back"><FaGithub /></div>
@@ -80,7 +85,6 @@ const Hero: React.FC<HeroProps> = ({ loading }) => {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   )

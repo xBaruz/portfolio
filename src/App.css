@@ -1,5 +1,10 @@
+main {
+  position: relative;
+  isolation: isolate;
+}
+
 main > * {
-  padding: 0 12%;
+  width: 100%;
 }
 
 .space-container {
@@ -17,11 +22,12 @@ main > * {
 .space-scene {
   position: fixed;
   inset: 0;
-  z-index: 1;
-  perspective: 1200px;
-  perspective-origin: center center;
-  pointer-events: none;
+  z-index: -1;
   display: none;
+  overflow: hidden;
+  perspective: 1200px;
+  perspective-origin: center;
+  pointer-events: none;
 }
 
 .dark-theme .space-scene {
@@ -29,137 +35,116 @@ main > * {
 }
 
 .space-scene::after {
-  background: radial-gradient(circle, transparent 0%, rgba(5, 5, 15, 0.1) 100%);
   position: absolute;
   inset: 0;
-  content: "";
   z-index: 5;
+  content: '';
+  background: radial-gradient(circle at 50% 35%, transparent 0%, rgba(3, 5, 12, 0.32) 72%, rgba(3, 5, 12, 0.7) 100%);
   pointer-events: none;
-  transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .grid-layer {
   position: absolute;
-  inset: -30%;
+  inset: -35%;
+  background-image:
+    linear-gradient(rgba(139, 124, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 124, 255, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.72) 48%, transparent 92%);
+  transform: rotateX(66deg) translateY(22%);
   transform-style: preserve-3d;
-  background-image: radial-gradient(circle at 50% 20%, rgba(181, 156, 90, 0.1) 0%, transparent 60%);
-  transform: rotateX(25deg);
-  transition: background-image 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .stars-layer {
   position: absolute;
   inset: -60%;
-  transform-style: preserve-3d;
   background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 1) 1.5px, transparent 1.5px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.85) 1.2px, transparent 1.2px),
-    radial-gradient(circle, rgba(167, 139, 250, 0.6) 2.5px, transparent 2.5px);
-  background-size: 220px 220px, 340px 340px, 280px 280px;
-  background-position: 0 0, 70px 40px, 120px 180px;
-  animation: cosmicOrbit 180s linear infinite;
-  transition: background-image 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    radial-gradient(circle, rgba(255, 255, 255, 0.9) 1px, transparent 1.2px),
+    radial-gradient(circle, rgba(167, 139, 250, 0.6) 1px, transparent 1.4px),
+    radial-gradient(circle, rgba(94, 234, 212, 0.45) 1.4px, transparent 1.8px);
+  background-position: 0 0, 90px 60px, 180px 120px;
+  background-size: 260px 260px, 380px 380px, 460px 460px;
+  opacity: 0.55;
+  transform-style: preserve-3d;
+  animation: cosmicOrbit 210s linear infinite;
 }
 
 .nebula {
   position: absolute;
-  top: -200px;
+  top: -180px;
   left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 1600px;
-  height: 650px;
-  background: var(--nebula);
-  filter: blur(100px);
-  pointer-events: none;
-  transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1), filter 0.8s ease;
   z-index: 1;
-}
-
-@keyframes cosmicOrbit {
-  0% {
-    transform: rotateX(50deg) rotateY(-15deg) rotateZ(0deg) translateZ(-400px) scale(0.65);
-    opacity: 0.4;
-  }
-  25% {
-    transform: rotateX(50deg) rotateY(-15deg) rotateZ(90deg) translateZ(-150px) scale(0.85);
-    opacity: 0.6;
-  }
-  50% {
-    transform: rotateX(50deg) rotateY(-15deg) rotateZ(180deg) translateZ(250px) scale(1.35);
-    opacity: 0.8;
-  }
-  75% {
-    transform: rotateX(50deg) rotateY(-15deg) rotateZ(270deg) translateZ(-150px) scale(0.85);
-    opacity: 0.6;
-  }
-  100% {
-    transform: rotateX(50deg) rotateY(-15deg) rotateZ(360deg) translateZ(-400px) scale(0.65);
-    opacity: 0.4;
-  }
+  width: min(1400px, 110vw);
+  height: 620px;
+  background: var(--nebula);
+  filter: blur(90px);
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 button {
-  font-size: 1rem;
-  cursor: pointer;
-  border: none;
-  font-weight: 600;
-  font-family: inherit;
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  position: relative;
   overflow: hidden;
-  z-index: 1;
+  border: 0;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 button.main-styled {
+  min-height: 48px;
+  padding: 12px 26px;
   background: var(--button-gradient);
-  box-shadow: 0 4px 15px var(--button-gradient-shadow);
-  color: white;
-  padding: 12px 28px;
-  transition: 
-    transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-    box-shadow 0.4s ease, 
-    filter 0.4s ease;
-}
-
-button.main-styled:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 8px 30px var(--button-gradient-hover);
-  filter: brightness(110%);
+  color: #ffffff;
+  box-shadow: 0 14px 32px var(--button-gradient-shadow);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s ease, filter 0.3s ease;
 }
 
 button.main-styled::after {
-  content: '';
   position: absolute;
   top: -50%;
-  left: -60%;
-  width: 20%;
-  height: 200%;
-  background: linear-gradient(
-    90deg, 
-    rgba(255, 255, 255, 0) 0%, 
-    rgba(255, 255, 255, 0.6) 50%, 
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: rotate(25deg);
-  transition: left 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  left: -80%;
   z-index: -1;
+  width: 32%;
+  height: 200%;
+  content: '';
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: rotate(24deg);
+  transition: left 0.72s var(--ease-out);
+}
+
+button.main-styled:hover {
+  transform: translateY(-3px);
+  filter: saturate(1.08) brightness(1.04);
+  box-shadow: 0 20px 42px var(--button-gradient-hover);
 }
 
 button.main-styled:hover::after {
-  left: 140%;
+  left: 150%;
 }
 
 .reveal-section {
   opacity: 0;
-  transform: translateY(50px);
-  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease;
+  transform: translateY(28px);
+  transition: transform 0.8s var(--ease-out), opacity 0.8s ease;
 }
 
 .reveal-section.animate-reveal {
   opacity: 1;
   transform: translateY(0);
+}
+
+@keyframes cosmicOrbit {
+  from {
+    transform: rotateX(50deg) rotateY(-12deg) rotateZ(0deg) translateZ(-360px) scale(0.72);
+  }
+  to {
+    transform: rotateX(50deg) rotateY(-12deg) rotateZ(360deg) translateZ(-360px) scale(0.72);
+  }
 }
