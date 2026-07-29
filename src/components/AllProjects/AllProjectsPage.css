@@ -140,8 +140,8 @@
 }
 
 .mockup-wrapper {
-  /* position: sticky; */
-  top: 110px;
+  position: relative;
+  top: auto;
   padding: 12px;
   overflow: hidden;
   border: var(--border-card);
