@@ -141,7 +141,7 @@
 
 .dark-theme {
   color-scheme: dark;
-  --bg: #080b14;
+  --bg: #0b0f1b;
   --bg-light: #111827;
   --bg-gradient-top: linear-gradient(180deg, #080a12 0%, #0b1020 70%, transparent 100%);
   --bg-gradient-topLoader: linear-gradient(145deg, #070912 0%, #10142b 48%, #121023 100%);

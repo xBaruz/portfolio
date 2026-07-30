@@ -11,6 +11,7 @@ import secureShare from "../assets/img/secureShare/secureShare.jpg";
 import helpDesk from "../assets/img/helpDesk.jpg";
 import rocksVsMines from "../assets/img/rocksVsMines.jpg";
 import medConnect from "../assets/img/medConnect.jpg";
+import netPulse from "../assets/img/netPulse.jpg";
 
 import secureShare1 from "../assets/img/secureShare/secureShare1.jpg";
 import secureShare2 from "../assets/img/secureShare/secureShare2.jpg";
@@ -38,7 +39,53 @@ import hybridShop9 from "../assets/img/hybridshop/9.jpg";
 import hybridShop10 from "../assets/img/hybridshop/10.jpg";
 import hybridShop11 from "../assets/img/hybridshop/11.jpg";
 
+import netpulse1 from "../assets/img/netPulse/1.jpg";
+import netpulse2 from "../assets/img/netPulse/2.jpg";
+import netpulse3 from "../assets/img/netPulse/3.jpg";
+import netpulse4 from "../assets/img/netPulse/4.jpg";
+
+
+
 export const ProjectsData: ProjectInterface[] = [
+  {
+    id: "netpulse-log-monitor",
+    title: "NetPulse Log Monitor",
+    titleEn: "NetPulse Log Monitor",
+    img: netPulse,
+    github: "https://github.com/xBaruz/NetPulse",
+    screenshots: [
+      netpulse1,
+      netpulse2,
+      netpulse3,
+      netpulse4
+    ],
+    technologies: [
+      "C#",
+      ".NET 10",
+      "Windows Service",
+      "FileSystemWatcher",
+      "Telegram Bot API",
+      "SQLite",
+      "Inno Setup",
+      "Clean Architecture"
+    ],
+    description: "Usługa systemowa Windows przeznaczona do automatycznego i pasywnego monitorowania plików logów w czasie rzeczywistym z natychmiastowym powiadamianiem na platformie Telegram.",
+    descriptionEn: "A Windows system service designed for real-time automatic and passive log file monitoring with instant notifications on Telegram.",
+    features: [
+      "Praca w tle jako usługa systemowa z automatycznym startem przy uruchomieniu systemu",
+      "Detekcja zmian w plikach logów w czasie rzeczywistym za pomocą FileSystemWatcher",
+      "Błyskawiczne wysyłanie alertów o błędach na kanał Telegram przez Telegram Bot API",
+      "Zapis zdarzeń do lokalnej bazy danych SQLite",
+      "Automatyczna instalacja i konfiguracja usługi poprzez dedykowany instalator Inno Setup"
+    ],
+    featuresEn: [
+      "Background Windows service running with automatic startup upon system boot",
+      "Real-time log file change detection using FileSystemWatcher",
+      "Instant error alert dispatching to Telegram via Telegram Bot API",
+      "Event logging to a local SQLite database",
+      "Automated service installation and configuration via a dedicated Inno Setup installer"
+    ]
+  },
   {
     id: "hybridshop",
     title: "HybridShop - Platforma E-Commerce",
