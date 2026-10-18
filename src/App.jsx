@@ -1,9 +1,9 @@
 import "./App.css";
 
 import {
-  HashRouter,
-  Routes,
-  Route
+    BrowserRouter,
+    Routes,
+    Route
 } from "react-router-dom";
 
 import About from "./About/About";
@@ -84,18 +84,15 @@ const Home = () => {
 
 function App() {
   return (
-    <HashRouter>
+    <BrowserRouter basename="/portfolio">
       <Navbar />
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/projekty" element={<AllProjects />} />
-        <Route
-          path="/projekty/:projectId"
-          element={<AllProjects />}
-        />
+          <Route path="/" element={<Home />} />
+          <Route path="/projekty" element={<AllProjects />} />
+          <Route path="/projekty/:projectId" element={<AllProjects />} />
       </Routes>
-    </HashRouter>
+  </BrowserRouter>
   );
 }
 

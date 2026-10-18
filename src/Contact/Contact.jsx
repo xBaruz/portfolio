@@ -68,8 +68,8 @@ const Contact = () => {
                 serviceId,
                 templateId,
                 {
-                    from_email: formData.email,
-                    reply_to: formData.email,
+                    name: formData.email,
+                    email: formData.email,
                     message: formData.message,
                 },
                 {
