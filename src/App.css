@@ -1,0 +1,61 @@
+.scroll-more {
+    position: fixed;
+    bottom: 35px;
+    right: 50px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    z-index: 10;
+
+    color: rgba(235, 190, 255, 0.75);
+
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 3px;
+
+    text-align: center;
+
+    cursor: pointer;
+}
+
+.scroll-line {
+    width: 1px;
+    height: 45px;
+
+    margin-bottom: 10px;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(226, 85, 255, 0),
+        rgba(226, 85, 255, 0.9)
+    );
+
+    box-shadow: 0 0 8px rgba(226, 85, 255, 0.45);
+}
+
+.scroll-text {
+    line-height: 1.6;
+    white-space: nowrap;
+
+    text-shadow:
+        0 0 8px rgba(226, 85, 255, 0.45);
+}
+
+.scroll-arrow {
+    margin-top: 7px;
+
+    font-size: 18px;
+    font-weight: 300;
+
+    color: rgba(230, 190, 255, 0.85);
+
+}
+
+
+@media (max-width: 768px) {
+    .scroll-more{
+        display: none;
+    }
+}
