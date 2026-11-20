@@ -423,14 +423,12 @@
 }
 
 @media (max-width: 1025px) {
-    .card-wrapper
-    {
-        scale: 0.75;
+    .card-wrapper {
+        transform-origin: center center;
+        transform: scale(0.75);
         top: calc(50% - 95px);
     }
 }
-
-
 
 @media (max-width: 992px) {
     #hero-section .container {
@@ -480,8 +478,10 @@
     }
 
     .card-wrapper {
-        left: calc(50% - 285px);
-        top: calc(50% - 105px);
+        left: calc(50% - 305px);
+        top: calc(50% - 125px);
+        transform-origin: center center;
+        transform: scale(0.75);
     }
 }
 
@@ -515,7 +515,6 @@
         height: 260px;
     }
 
-
     .right-section .image::before {
         width: 280px;
         height: 280px;
@@ -533,16 +532,17 @@
     }
 
     .card-wrapper {
-        left: calc(50% - 225px);
-        top: calc(50% - 55px);
-        scale: 0.35;
+        width: 210px;
+        left: calc(50% - 185px);
+        top: calc(50% - 62px);
         bottom: auto;
-        transform: none;
+        transform-origin: center center;
+        transform: scale(0.58);
     }
 
-
     .card-front {
-        padding: 12px 14px;
+        padding: 9px 11px;
+        border-radius: 12px;
     }
 
     .small-image {
@@ -551,21 +551,35 @@
     }
 
     .status {
-        padding: 5px 10px;
-        font-size: 10px;
+        padding: 4px 8px;
+        font-size: 9px;
+        gap: 5px;
+    }
+
+    .status .dot {
+        width: 5px;
+        height: 5px;
     }
 
     .card-info {
-        gap: 6px;
-        padding: 10px 0 2px 0;
+        gap: 4px;
+        padding: 7px 0 1px 0;
     }
 
     .card-info h4 {
-        font-size: 14.5px;
+        font-size: 12.5px;
     }
 
-    .card-info .subtitle,
+    .card-info .subtitle {
+        font-size: 9.5px;
+    }
+
     .card-info .tags {
-        font-size: 11px;
+        font-size: 9.5px;
+        white-space: normal;
+        flex-wrap: wrap;
+        line-height: 1.25;
+        gap: 4px;
+        row-gap: 1px;
     }
 }
