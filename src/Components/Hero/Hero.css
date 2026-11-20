@@ -535,7 +535,7 @@
     .card-wrapper {
         left: calc(50% - 225px);
         top: calc(50% - 55px);
-        scale: 0.5;
+        scale: 0.35;
         bottom: auto;
         transform: none;
     }
